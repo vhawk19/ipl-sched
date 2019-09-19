@@ -64,11 +64,11 @@ class IPL:
         self.matches=[]
         teamCount=len(self.teams)
         if teamCount & 1:
-            self.teams1=teams[:ceil(teamCount/2)]
-            self.teams2=teams[ceil(teamCount/2):]
+            self.teams1=self.teams[:ceil(teamCount/2)]
+            self.teams2=self.teams[ceil(teamCount/2):]
         else:
-            self.teams1=teams[:(teamCount//2)]
-            self.teams2=teams[(teamCount//2):]
+            self.teams1=self.teams[:(teamCount//2)]
+            self.teams2=self.teams[(teamCount//2):]
         team1Count=len(self.teams1)
         team2Count=len(self.teams2)
         if self.matchDayCount==0:
@@ -102,52 +102,3 @@ class IPL:
         self.clearPointer()
 
         return self.matches
-
-def isweekend(currDate):
-    if currDate.weekday()>4:
-        return True
-    else:
-        return False
-
-def setDates(schedule,startingDate):
-    currDate=startingDate    
-    schedule[0]['date']=currDate.strftime('%d/%m/%Y')
-    schedule[0]['count']=1
-    weekendCount=0
-    for i in range(1,len(schedule)):
-        if not isweekend(currDate):
-            currDate+=datetime.timedelta(days=1)
-        else:
-            weekendCount+=1
-        if weekendCount==2:
-            currDate+=datetime.timedelta(days=1)
-            weekendCount=0
-        schedule[i]['date']=currDate.strftime('%d/%m/%Y')
-        schedule[i]['count']=i+1
-    return schedule
-teams=['Team A','Team B','Team C','Team D','Team E','Team F','Team G','Team H']
-stadiums=['Chennai','Kochi','Bangalore','Pune','Bombay','Delhi','Jaipur','Kolkata']
-roundRobin=IPL(teams)
-roundRobin.createMatches()
-if roundRobin.finished == True:
-    matches=(roundRobin.matches)
-
-homeMatches=[]
-awayMatches=[]
-for matchPair in matches:
-    homeMatch={}
-    awayMatch={}
-    homeMatch['home-team']=matchPair[0]
-    homeMatch['away-team']=matchPair[1]
-    homeMatch['match']=matchPair[0]+" vs "+matchPair[1]
-    homeMatch['matchPair']=matchPair
-    homeMatch['stadium']=stadiums[teams.index(matchPair[0])]
-    awayMatch['home-team']=matchPair[1]
-    awayMatch['away-team']=matchPair[0]
-    awayMatch['match']=matchPair[1]+" vs "+matchPair[0]
-    awayMatch['matchPair']=matchPair
-    awayMatch['stadium']=stadiums[teams.index(matchPair[1])]
-    homeMatches.append(homeMatch)
-    awayMatches.append(awayMatch)
-matches=homeMatches+awayMatches
-matches=setDates(matches,startDate)
