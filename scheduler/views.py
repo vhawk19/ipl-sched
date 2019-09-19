@@ -57,5 +57,7 @@ def setSchedule(startDate):
     return setDates(matches,startDate)
 def schedule(req,year,month,day):
     startDate=datetime.date(year,month,day)
+    print(year,month,day)
+    print(startDate)
     return JsonResponse(setSchedule(startDate),safe=False)
 
